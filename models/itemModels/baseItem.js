@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const baseOption = {
-    discriminatorKey: '_king',
+    discriminatorKey: '_kind',
     data: 'data'
 }
 
@@ -11,7 +11,7 @@ const baseSchema = new Schema({
     price: Number,
     description: {type: String, required: true},
     images: [String],
-    location: new Schema({ latitude: Number, longitute: Number}),
+    location: new Schema({ latitude: Number, longitude: Number}),
     city: String,
     datePosted: Date,
     _uid: { type: Schema.Types.ObjectId, ref: 'users'}

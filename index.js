@@ -9,6 +9,7 @@ require('./models/itemModels/electronics');
 require('./models/user');
 
 const userRoute = require('./routes/userRoute');
+const itemRoute = require('./routes/itemRoute');
 
 mongoose.connect(
     process.env.MONGOURI,
@@ -26,6 +27,7 @@ mongoose.connect(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use('/user',userRoute);
+app.use('/items', itemRoute);
 
 const PORT = process.env.PORT;
 app.listen(PORT);
