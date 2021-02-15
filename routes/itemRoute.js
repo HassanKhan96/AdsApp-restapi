@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const checkAuth = require('../middleware/checkAuth');
 const mongoose = require('mongoose');
 const electronics = mongoose.model('electronics');
 const vehicles = mongoose.model('vehicles');
@@ -12,15 +13,31 @@ router.get('/',(req,res,next) => {
     });
 });
 
-router.post('/',async (req,res,next) => {
-    const newItem = await new dbs[req.body.type](req.body);
-    newItem
-    .populate('_uid, name')
-    .save()
-    res.status(201).json({
-        message: 'post ads of item',
-        newItem
-    });
+router.post('/',checkAuth,async (req,res,next) => {
+    try{
+        const newItem = await new dbs[req.body.type]({
+            ...req.body,
+            _uid: req.currentUser.id
+        })
+        newItem.save()
+        res.status(201).json({
+            message: 'post ads of item',
+            newItem
+        });
+    }
+    catch(error){
+        if(error.name === 'TypeError'){
+            return res.status(500).json({
+                    error: {
+                        message: "Type is not defined."
+                    }
+            })
+        }
+        res.status(500).json({
+            error
+        })
+    }
+
 });
 
 router.get('/:itemId',(req,res,next) => {
