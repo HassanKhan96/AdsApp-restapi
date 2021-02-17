@@ -1,10 +1,8 @@
 const express = require('express');
+const upload = require('../middleware/Multer');
 const router = express.Router();
 const checkAuth = require('../middleware/checkAuth');
 const mongoose = require('mongoose');
-const electronics = mongoose.model('electronics');
-const vehicles = mongoose.model('vehicles');
-const mobile = mongoose.model('mobile');
 const dbs = mongoose.models;
 
 router.get('/',(req,res,next) => {
@@ -13,17 +11,18 @@ router.get('/',(req,res,next) => {
     });
 });
 
-router.post('/',checkAuth,async (req,res,next) => {
+router.post('/',checkAuth, upload.array('images'),async (req,res,next) => {
     try{
-        const newItem = await new dbs[req.body.type]({
-            ...req.body,
-            _uid: req.currentUser.id
-        })
-        newItem.save()
-        res.status(201).json({
-            message: 'post ads of item',
-            newItem
-        });
+        console.log(req.files)
+        // const newItem = await new dbs[req.body.type]({
+        //     ...req.body,
+        //     _uid: req.currentUser.id
+        // })
+        // newItem.save()
+        // res.status(201).json({
+        //     message: 'post ads of item',
+        //     newItem
+        // });
     }
     catch(error){
         if(error.name === 'TypeError'){
@@ -33,6 +32,7 @@ router.post('/',checkAuth,async (req,res,next) => {
                     }
             })
         }
+        console.log(error)
         res.status(500).json({
             error
         })
