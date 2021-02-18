@@ -12,11 +12,11 @@ require('./models/user');
 const userRoute = require('./routes/userRoute');
 const itemRoute = require('./routes/itemRoute');
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET
-})
+// cloudinary.config({
+//     cloud_name: process.env.CLOUDINARY_NAME,
+//     api_key: process.env.CLOUDINARY_KEY,
+//     api_secret: process.env.CLOUDINARY_SECRET
+// })
 
 mongoose.connect(
     process.env.MONGOURI,
@@ -30,7 +30,7 @@ mongoose.connect(
     }
 });
 
-
+app.use('/uploads/', express.static('uploads'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use('/user',userRoute);
