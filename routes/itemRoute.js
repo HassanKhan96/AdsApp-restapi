@@ -1,5 +1,5 @@
 const express = require('express');
-const upload = require('../middleware/Multer');
+const upload = require('../middleware/Multer')('./uploads');
 const router = express.Router();
 const checkAuth = require('../middleware/checkAuth');
 const mongoose = require('mongoose');
