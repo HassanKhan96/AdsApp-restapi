@@ -7,6 +7,7 @@ const UserSchema = new Schema({
     name: String,
     profileImage: String,
     phone: Number,
+    postedAds: [{type: Schema.Types.ObjectId, ref: 'base'}]
 });
 
 const users = mongoose.model('users', UserSchema);

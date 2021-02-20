@@ -19,8 +19,10 @@ router.post('/', checkAuth, upload.array('images'), async (req, res, next) => {
             images: imagesPath,
             datePosted: Date.now(),
             location: JSON.parse(req.body.location)
-        })
-        newItem.save()
+        }).save()
+        const user = await dbs['users'].findOne({_id: req.currentUser.id});
+        user.postedAds.push(newItem.id);
+        user.save()
         res.status(201).json({
             message: 'post ads of item',
             newItem
