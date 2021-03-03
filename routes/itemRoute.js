@@ -50,7 +50,6 @@ router.get('/:type/:itemId', async (req, res, next) => {
         const itemId = req.params.itemId;
         const type = req.params.type;
         const result = await dbs[type].findOne({ _id: itemId })
-        console.log(result)
         if (!result) {
             return res.status(404).json({
                 message: `No item found with id: ${itemId} and type: ${type}`,
@@ -72,10 +71,17 @@ router.get('/:type/:itemId', async (req, res, next) => {
     }
 });
 
-router.put('/:itemId', (req, res, next) => {
+router.patch('/:type/:itemId', async (req, res, next) => {
     const itemId = req.params.itemId;
+    const type = req.params.type;
+    const result = await dbs[type];
+    const newValue = await result.updateOne({_id: itemId}, {$set: req.body.values})
     res.status(200).json({
-        message: `put item of id: ${itemId}`
+        message: `Item: ${itemId} is updated.`,
+        product: {
+            id: itemId,
+            URL: `http://localhost:5000/${type}/${itemId}`
+        }
     });
 });
 
