@@ -4,7 +4,11 @@ const router = express.Router();
 const checkAuth = require('../middleware/checkAuth');
 const mongoose = require('mongoose');
 const dbs = mongoose.models;
-router.get('/', (req, res, next) => {
+router.get('/:location/:type', async (req, res, next) => {
+    const location = req.params.location;
+    const type = req.params.type;
+    const data = await dbs[type].find({}).sort({date: 'desc'}).exec();
+    console.log(data);
     res.status(200).json({
         message: 'get ads of item'
     });
