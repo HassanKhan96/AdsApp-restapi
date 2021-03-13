@@ -2,17 +2,12 @@ const express = require('express');
 const upload = require('../middleware/Multer')('./uploads');
 const router = express.Router();
 const checkAuth = require('../middleware/checkAuth');
+const itemGetRoute = require('./itemGetRoute');
 const mongoose = require('mongoose');
 const dbs = mongoose.models;
-router.get('/:location/:type', async (req, res, next) => {
-    const location = req.params.location;
-    const type = req.params.type;
-    const data = await dbs[type].find({}).sort({date: 'desc'}).exec();
-    console.log(data);
-    res.status(200).json({
-        message: 'get ads of item'
-    });
-});
+
+router.use('/', itemGetRoute);
+
 
 router.post('/', checkAuth, upload.array('images'), async (req, res, next) => {
     try {
